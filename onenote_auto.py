@@ -32,3 +32,9 @@ def get_notebook_names(access_token):
     url = 'https://graph.microsoft.com/v1.0/me/onenote/notebooks?$select=id,displayName'
 
     return(requests.get(url, headers=headers ))
+
+def list_notebook_names(access_token):
+    response = get_notebook_names(access_token)
+    response_json = response.json()
+    for i in range(len(response_json["value"])):
+        print(response_json["value"][i]["displayName"])
