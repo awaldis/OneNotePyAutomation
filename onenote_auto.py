@@ -2,8 +2,8 @@ import msal
 import yaml
 import requests
 
-def get_access_token():
-    with open('config.yaml') as config_file:
+def get_access_token( config_filename = 'config.yaml'):
+    with open(config_filename) as config_file:
         config = yaml.safe_load(config_file)
 
     # Initialize the MSAL public client
