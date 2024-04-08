@@ -38,3 +38,48 @@ def list_notebook_names(access_token):
     response_json = response.json()
     for i in range(len(response_json["value"])):
         print(response_json["value"][i]["displayName"])
+
+def add_notebook_pages( access_token, page_title_string_list, config_filename = 'config.yaml' ):
+    # TODO get rid of this file read.
+    with open(config_filename) as config_file:
+        config = yaml.safe_load(config_file)
+
+    section_id = config['section_id']
+
+    # HTML template string
+    page_content_template = """
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>{}</title>
+        </head>
+        <body>
+        </body>
+        </html>
+    """
+    # Create HTTP POST request headers
+    headers = {
+            'Authorization': 'Bearer ' + access_token,
+            'Content-Type': 'application/xhtml+xml',
+    }
+    # One loop for each title in the title list
+    for title in page_title_string_list:
+        # Insert the title into the HTML
+        final_page_content = page_content_template.format(title)
+
+        # Now post the request
+        url = f'https://graph.microsoft.com/v1.0/me/onenote/sections/{section_id}/pages'
+        response = requests.post(url, headers=headers, data=final_page_content.encode('utf-8'))
+
+        if response.status_code == requests.codes.created :
+            print("Page with title " + '"' + title + '" created successfully.' )
+        else:
+            print("ERROR! - Could not create page with title " + '"' + title + '" .' )
+            print(response.status_code)
+            print(response.json())
+            print( "No further page creations will be attempted.")
+            break
+
+
+
+    
