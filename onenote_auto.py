@@ -39,6 +39,17 @@ def list_notebook_names(access_token):
     for i in range(len(response_json["value"])):
         print(response_json["value"][i]["displayName"])
 
+def get_notebook_id(access_token, notebook_name):
+    response = get_notebook_names(access_token)
+    response_json = response.json()
+
+    for i in range(len(response_json["value"])):
+        if response_json["value"][i]["displayName"] == notebook_name :
+            return(response_json["value"][i]["id"])
+
+    print(f'Error - Could not find notebook {notebook_name}.')
+    return()            
+
 def add_notebook_pages( access_token, page_title_string_list, config_filename = 'config.yaml' ):
     # TODO get rid of this file read.
     with open(config_filename) as config_file:
