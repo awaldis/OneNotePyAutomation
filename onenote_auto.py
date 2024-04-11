@@ -33,6 +33,15 @@ def get_notebook_names(access_token):
 
     return(requests.get(url, headers=headers ))
 
+def get_section_names(access_token, notebook_id):
+    # Create HTTP GET request header
+    headers = {
+            'Authorization': 'Bearer ' + access_token,
+    }
+    url = f'https://graph.microsoft.com/v1.0/me/onenote/notebooks/{notebook_id}/sections?$select=id,displayName'
+
+    return(requests.get(url, headers=headers ))
+
 def list_notebook_names(access_token):
     response = get_notebook_names(access_token)
     response_json = response.json()
