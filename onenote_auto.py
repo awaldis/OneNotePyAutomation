@@ -4,6 +4,7 @@ import yaml
 
 
 class OneNoteClient:
+    """For reading and writing Microsoft OneNote notebooks via the Graph API."""    
     def __init__(self, config_filename="config.yaml"):
         self.config_filename = config_filename
         self.access_token = self.get_access_token()
