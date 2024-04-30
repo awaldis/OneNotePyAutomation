@@ -4,14 +4,26 @@ import yaml
 
 
 class OneNoteClient:
-    """For reading and writing Microsoft OneNote notebooks via the Graph API."""    
+    """For reading and writing Microsoft OneNote notebooks via the Graph API."""
+
     def __init__(self, config_filename="config.yaml"):
         self.config_filename = config_filename
-        self.access_token = self.get_access_token()
+        self.access_token = self._get_access_token()
         if self.access_token is None:
             raise Exception("Failed to obtain access token.")
 
-    def get_access_token(self):
+    def _get_access_token(self):
+        """
+        Use MSAL library and Microsfoft endpoint to get a token interactively.
+        This method is not intended to be called from outside the class.
+
+        Args:
+            None but self.
+
+        Returns:
+            Access token.
+        """
+        # Read configuration parameters from the config file.
         with open(self.config_filename) as config_file:
             config = yaml.safe_load(config_file)
 
