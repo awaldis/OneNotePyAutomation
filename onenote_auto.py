@@ -40,7 +40,17 @@ class OneNoteClient:
 
         return token_response.get("access_token")
 
-    def get_notebook_names(self):
+    def get_notebook_names_and_ids(self):
+        """
+        Using an already existing access token, get a list of names of
+        notebooks and their corresponding identification numbers.
+
+        Args:
+            None but self.
+
+        Returns:
+            A requests response object containing the list of notebook names and ids.
+        """
         headers = {"Authorization": "Bearer " + self.access_token}
         url = "https://graph.microsoft.com/v1.0/me/onenote/notebooks?$select=id,displayName"
         return requests.get(url, headers=headers)
@@ -51,13 +61,13 @@ class OneNoteClient:
         return requests.get(url, headers=headers)
 
     def list_notebook_names(self):
-        response = self.get_notebook_names()
+        response = self.get_notebook_names_and_ids()
         response_json = response.json()
         for item in response_json["value"]:
             print(item["displayName"])
 
     def get_notebook_id(self, notebook_name):
-        response = self.get_notebook_names()
+        response = self.get_notebook_names_and_ids()
         response_json = response.json()
 
         for item in response_json["value"]:
