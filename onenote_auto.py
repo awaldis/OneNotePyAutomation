@@ -55,7 +55,18 @@ class OneNoteClient:
         url = "https://graph.microsoft.com/v1.0/me/onenote/notebooks?$select=id,displayName"
         return requests.get(url, headers=headers)
 
-    def get_section_names(self, notebook_id):
+    def get_section_names_and_ids(self, notebook_id):
+        """
+        Using an already existing access token and a notebook ID number, get
+        a list of the names of the sections in the notebook and their
+        corresponding identification numbers.
+
+        Args:
+            None but self.
+
+        Returns:
+            A requests response object containing the list of section names and ids.
+        """
         headers = {"Authorization": "Bearer " + self.access_token}
         url = f"https://graph.microsoft.com/v1.0/me/onenote/notebooks/{notebook_id}/sections?$select=id,displayName"
         return requests.get(url, headers=headers)
