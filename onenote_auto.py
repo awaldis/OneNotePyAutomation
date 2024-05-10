@@ -14,7 +14,7 @@ class OneNoteClient:
 
     def _get_access_token(self):
         """
-        Use MSAL library and Microsfoft endpoint to get a token interactively.
+        Use MSAL library and Microsoft endpoint to get a token interactively.
         This method is not intended to be called from outside the class.
 
         Args:
@@ -72,7 +72,38 @@ class OneNoteClient:
         return requests.get(url, headers=headers)
 
     def list_notebook_names(self):
+        """
+        Using an already existing access token, print the list of notebooks
+        associated with that token. 
+
+        Args:
+            None but self.
+
+        Returns:
+            None - this function only prints to standard output.
+        """
         response = self.get_notebook_names_and_ids()
+        response_json = response.json()
+        for item in response_json["value"]:
+            print(item["displayName"])
+
+    def list_section_names(self, notebook_name):
+        """
+        Using an already existing access token and the notebook name,
+        print the list of sections associated with that token. 
+
+        Args:
+            None but self.
+
+        Returns:
+            None - this function only prints to standard output.
+        """
+        notebook_id = self.get_notebook_id(notebook_name)
+        
+        if notebook_id is None:
+            return      
+
+        response = self.get_section_names_and_ids(notebook_id)
         response_json = response.json()
         for item in response_json["value"]:
             print(item["displayName"])
