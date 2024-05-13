@@ -109,6 +109,16 @@ class OneNoteClient:
             print(item["displayName"])
 
     def get_notebook_id(self, notebook_name):
+        """
+        Return the notebook id number associated with the name of of the
+        notebook provided in the inputs.
+
+        Args:
+            notebook_name - a string containing the notebook name.
+
+        Returns:
+            The notebook id associated with the input name.
+        """
         response = self.get_notebook_names_and_ids()
         response_json = response.json()
 
@@ -117,6 +127,28 @@ class OneNoteClient:
                 return item["id"]
 
         print(f"Error - Could not find notebook {notebook_name}.")
+        return None
+
+    def get_section_id(self, notebook_name, section_name):
+        """
+        Return the section id number associated with the name of the
+        notebook and section provided in the inputs.
+
+        Args:
+            notebook_name - a string containing the notebook name.
+            section_name - a string containing the section name.
+
+        Returns:
+            The section id associated with the input name.
+        """
+        response = self.get_section_names_and_ids(self.get_notebook_id(notebook_name))
+        response_json = response.json()
+
+        for item in response_json["value"]:
+            if item["displayName"] == section_name:
+                return item["id"]
+
+        print(f"Error - Could not find notebook {section_name}.")
         return None
 
     def add_notebook_pages(self, page_title_string_list):
