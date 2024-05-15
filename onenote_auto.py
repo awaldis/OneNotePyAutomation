@@ -151,11 +151,8 @@ class OneNoteClient:
         print(f"Error - Could not find notebook {section_name}.")
         return None
 
-    def add_notebook_pages(self, page_title_string_list):
-        # Load section_id from config
-        with open(self.config_filename) as config_file:
-            config = yaml.safe_load(config_file)
-        section_id = config["section_id"]
+    def add_notebook_pages(self, notebook_name, section_name, page_title_string_list):
+        section_id = self.get_section_id(notebook_name, section_name)
 
         page_content_template = """
             <!DOCTYPE html>
