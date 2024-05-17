@@ -152,6 +152,19 @@ class OneNoteClient:
         return None
 
     def add_notebook_pages(self, notebook_name, section_name, page_title_string_list):
+        """
+        Add one blank notebook page for each title specified in the the input
+        to the notebook and section named in the input.  
+
+        Args:
+            notebook_name - a string containing the notebook name.
+            section_name - a string containing the section name.
+            page_title_string_list - list of titles for each page to add.
+
+        Returns:
+            None except for status and error messages printed to standard
+            output.
+        """
         section_id = self.get_section_id(notebook_name, section_name)
 
         page_content_template = """
