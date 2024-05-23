@@ -8,6 +8,7 @@ class OneNoteClient:
 
     def __init__(self, config_filename="config.yaml"):
         self.config_filename = config_filename
+        self.base_url = "https://graph.microsoft.com/v1.0/me/onenote"
         self.access_token = self._get_access_token()
         if self.access_token is None:
             raise Exception("Failed to obtain access token.")
@@ -52,7 +53,7 @@ class OneNoteClient:
             A requests response object containing the list of notebook names and ids.
         """
         headers = {"Authorization": "Bearer " + self.access_token}
-        url = "https://graph.microsoft.com/v1.0/me/onenote/notebooks?$select=id,displayName"
+        url = self.base_url + "/notebooks?$select=id,displayName"
         return requests.get(url, headers=headers)
 
     def get_section_names_and_ids(self, notebook_id):
@@ -68,7 +69,7 @@ class OneNoteClient:
             A requests response object containing the list of section names and ids.
         """
         headers = {"Authorization": "Bearer " + self.access_token}
-        url = f"https://graph.microsoft.com/v1.0/me/onenote/notebooks/{notebook_id}/sections?$select=id,displayName"
+        url = self.base_url + f"/notebooks/{notebook_id}/sections?$select=id,displayName"
         return requests.get(url, headers=headers)
 
     def list_notebook_names(self):
@@ -185,7 +186,7 @@ class OneNoteClient:
 
         for title in page_title_string_list:
             final_page_content = page_content_template.format(title)
-            url = f"https://graph.microsoft.com/v1.0/me/onenote/sections/{section_id}/pages"
+            url = self.base_url + f"/sections/{section_id}/pages"
             response = requests.post(
                 url, headers=headers, data=final_page_content.encode("utf-8")
             )
